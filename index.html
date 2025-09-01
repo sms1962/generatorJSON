@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;">
+    <title>JSON Prompt Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { max-width: 800px; margin-top: 50px; }
+        .tooltip-inner { max-width: 300px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">JSON Prompt Generator</h1>
+        <form id="promptForm">
+            <div class="mb-3">
+                <label for="prompt" class="form-label">Prompt <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="prompt" rows="3" placeholder="e.g., a serene mountain landscape" title="Core description of the image, e.g., a futuristic city at sunset. This is the main input for the LLM."></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="negativePrompt" class="form-label">Negative Prompt</label>
+                <textarea class="form-control" id="negativePrompt" rows="2" placeholder="e.g., blurry, low quality" title="Elements to exclude, e.g., 'blurry, low quality' – common in models like Stable Diffusion to refine outputs."></textarea>
+            </div>
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStyle" aria-expanded="true" aria-controls="collapseStyle">
+                            Style
+                        </button>
+                    </h2>
+                    <div id="collapseStyle" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            <select class="form-select" id="style" title="Artistic style influences the rendering technique, e.g., 'cyberpunk' for neon-futuristic vibes.">
+                                <option value="realistic" selected>Realistic</option>
+                                <option value="cartoon">Cartoon</option>
+                                <option value="oil painting">Oil Painting</option>
+                                <option value="digital art">Digital Art</option>
+                                <option value="photorealistic">Photorealistic</option>
+                                <option value="abstract">Abstract</option>
+                                <option value="pixel art">Pixel Art</option>
+                                <option value="watercolor">Watercolor</option>
+                                <option value="sketch">Sketch</option>
+                                <option value="cyberpunk">Cyberpunk</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLighting" aria-expanded="true" aria-controls="collapseLighting">
+                            Lighting
+                        </button>
+                    </h2>
+                    <div id="collapseLighting" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            <select class="form-select" id="lighting" title="Lighting sets the scene's illumination, affecting shadows and highlights for better realism.">
+                                <option value="natural daylight" selected>Natural Daylight</option>
+                                <option value="dramatic shadows">Dramatic Shadows</option>
+                                <option value="soft ambient">Soft Ambient</option>
+                                <option value="harsh sunlight">Harsh Sunlight</option>
+                                <option value="neon glow">Neon Glow</option>
+                                <option value="candlelight">Candlelight</option>
+                                <option value="backlit">Backlit</option>
+                                <option value="volumetric godrays">Volumetric Godrays</option>
+                                <option value="studio lighting">Studio Lighting</option>
+                                <option value="moonlight">Moonlight</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMood" aria-expanded="true" aria-controls="collapseMood">
+                            Mood
+                        </button>
+                    </h2>
+                    <div id="collapseMood" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            <select class="form-select" id="mood" title="Mood conveys emotional tone, helping models interpret the atmosphere.">
+                                <option value="neutral" selected>Neutral</option>
+                                <option value="joyful">Joyful</option>
+                                <option value="mysterious">Mysterious</option>
+                                <option value="serene">Serene</option>
+                                <option value="dramatic">Dramatic</option>
+                                <option value="eerie">Eerie</option>
+                                <option value="whimsical">Whimsical</option>
+                                <option value="adventurous">Adventurous</option>
+                                <option value="melancholic">Melancholic</option>
+                                <option value="energetic">Energetic</option>
+                                <option value="peaceful">Peaceful</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseColorScheme" aria-expanded="false" aria-controls="collapseColorScheme">
+                            Color Scheme
+                        </button>
+                    </h2>
+                    <div id="collapseColorScheme" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <select multiple class="form-select" id="colorScheme" title="Color palette defines dominant hues; multi-select for combinations.">
+                                <option value="neutral" selected>Neutral</option>
+                                <option value="monochrome">Monochrome</option>
+                                <option value="vibrant">Vibrant</option>
+                                <option value="pastel">Pastel</option>
+                                <option value="earth tones">Earth Tones</option>
+                                <option value="cool blues">Cool Blues</option>
+                                <option value="warm oranges">Warm Oranges</option>
+                                <option value="high contrast">High Contrast</option>
+                                <option value="neon">Neon</option>
+                                <option value="grayscale">Grayscale</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseComposition" aria-expanded="false" aria-controls="collapseComposition">
+                            Composition
+                        </button>
+                    </h2>
+                    <div id="collapseComposition" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <select class="form-select" id="composition" title="Composition guides element placement for visual balance.">
+                                <option value="balanced" selected>Balanced</option>
+                                <option value="rule of thirds">Rule of Thirds</option>
+                                <option value="centered">Centered</option>
+                                <option value="symmetrical">Symmetrical</option>
+                                <option value="asymmetrical">Asymmetrical</option>
+                                <option value="wide angle">Wide Angle</option>
+                                <option value="close-up">Close-up</option>
+                                <option value="panoramic">Panoramic</option>
+                                <option value="depth of field">Depth of Field</option>
+                                <option value="leading lines">Leading Lines</option>
+                                <option value="framed">Framed</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAspectRatio" aria-expanded="false" aria-controls="collapseAspectRatio">
+                            Aspect Ratio
+                        </button>
+                    </h2>
+                    <div id="collapseAspectRatio" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <select class="form-select" id="aspectRatio" title="Aspect ratio controls image dimensions; 'custom' allows free input if needed.">
+                                <option value="1:1" selected>1:1 (Square)</option>
+                                <option value="16:9">16:9 (Widescreen)</option>
+                                <option value="9:16">9:16 (Portrait)</option>
+                                <option value="4:3">4:3</option>
+                                <option value="3:2">3:2</option>
+                                <option value="2:1">2:1 (Panorama)</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseQuality" aria-expanded="false" aria-controls="collapseQuality">
+                            Quality
+                        </button>
+                    </h2>
+                    <div id="collapseQuality" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <select class="form-select" id="quality" title="Quality level impacts detail and resolution in generated images.">
+                                <option value="high" selected>High</option>
+                                <option value="low detail">Low Detail</option>
+                                <option value="medium detail">Medium Detail</option>
+                                <option value="ultra HD">Ultra HD</option>
+                                <option value="8K">8K</option>
+                                <option value="photorealistic">Photorealistic</option>
+                                <option value="stylized">Stylized</option>
+                                <option value="minimalist">Minimalist</option>
+                                <option value="intricate">Intricate</option>
+                                <option value="sharp focus">Sharp Focus</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeed" aria-expanded="false" aria-controls="collapseSeed">
+                            Seed
+                        </button>
+                    </h2>
+                    <div id="collapseSeed" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <input type="number" class="form-control" id="seed" value="12345" title="Fixed seed ensures repeatable results in diffusion models.">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="customKeys" class="mt-3">
+                <button type="button" class="btn btn-secondary" id="addCustomKey">Add Custom Key</button>
+            </div>
+            <div class="mt-3">
+                <button type="button" class="btn btn-primary" id="generateBtn">Generate JSON</button>
+                <button type="button" class="btn btn-warning" id="startOverBtn">Start Over</button>
+            </div>
+        </form>
+        <div class="mt-4">
+            <label for="jsonOutput" class="form-label">Generated JSON</label>
+            <textarea class="form-control" id="jsonOutput" rows="10" readonly></textarea>
+            <div class="mt-2">
+                <button type="button" class="btn btn-outline-secondary" id="copyBtn">Copy to Clipboard</button>
+                <button type="button" class="btn btn-outline-secondary" id="downloadBtn">Download JSON</button>
+            </div>
+        </div>
+        <div class="mt-4" id="history">
+            <h5>Recent JSONs</h5>
+            <div id="historyList"></div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+    <script>
+        let customKeyCount = 0;
+        const customKeys = [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generate random seed on load
+            document.getElementById('seed').value = Math.floor(Math.random() * 1000000);
+
+            // Load history
+            loadHistory();
+
+            // Add custom key functionality
+            document.getElementById('addCustomKey').addEventListener('click', function() {
+                customKeyCount++;
+                const div = document.createElement('div');
+                div.className = 'input-group mb-2';
+                div.setAttribute('data-key-id', customKeyCount);
+                div.innerHTML = `
+                    <input type="text" class="form-control" placeholder="Key name" id="customKey${customKeyCount}">
+                    <input type="text" class="form-control" placeholder="Value" id="customValue${customKeyCount}">
+                    <button class="btn btn-outline-danger" type="button" onclick="removeCustomKey(${customKeyCount})">Remove</button>
+                `;
+                document.getElementById('customKeys').appendChild(div);
+                customKeys.push(customKeyCount);
+            });
+
+            // Generate JSON
+            document.getElementById('generateBtn').addEventListener('click', generateJSON);
+
+            // Copy to clipboard
+            document.getElementById('copyBtn').addEventListener('click', function() {
+                const text = document.getElementById('jsonOutput').value;
+                if (text) {
+                    navigator.clipboard.writeText(text).then(() => alert('Copied to clipboard'));
+                }
+            });
+
+            // Download JSON
+            document.getElementById('downloadBtn').addEventListener('click', function() {
+                const text = document.getElementById('jsonOutput').value;
+                if (text) {
+                    const blob = new Blob([text], {type: 'application/json'});
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'prompt.json';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                }
+            });
+
+            // Start over
+            document.getElementById('startOverBtn').addEventListener('click', function() {
+                document.getElementById('promptForm').reset();
+                document.getElementById('seed').value = Math.floor(Math.random() * 1000000);
+                // Clear custom keys
+                customKeys.forEach(id => {
+                    const div = document.querySelector(`[data-key-id="${id}"]`);
+                    if (div) div.remove();
+                });
+                customKeys.length = 0;
+                customKeyCount = 0;
+                document.getElementById('jsonOutput').value = '';
+                // Reset multi-select
+                const colorSelect = document.getElementById('colorScheme');
+                Array.from(colorSelect.options).forEach(option => {
+                    option.selected = option.value === 'neutral';
+                });
+            });
+        });
+
+        function removeCustomKey(id) {
+            const div = document.querySelector(`[data-key-id="${id}"]`);
+            if (div) {
+                div.remove();
+                const index = customKeys.indexOf(id);
+                if (index > -1) customKeys.splice(index, 1);
+            }
+        }
+
+        function generateJSON() {
+            const prompt = document.getElementById('prompt').value.trim();
+            if (!prompt) {
+                alert('Prompt is required');
+                return;
+            }
+            const json = {
+                prompt: prompt,
+                negative_prompt: document.getElementById('negativePrompt').value.trim() || undefined,
+                style: document.getElementById('style').value,
+                lighting: document.getElementById('lighting').value,
+                mood: document.getElementById('mood').value,
+                color_scheme: Array.from(document.getElementById('colorScheme').selectedOptions).map(o => o.value),
+                composition: document.getElementById('composition').value,
+                aspect_ratio: document.getElementById('aspectRatio').value,
+                quality: document.getElementById('quality').value,
+                seed: parseInt(document.getElementById('seed').value) || 0
+            };
+            // Add custom keys
+            const existingKeys = new Set(Object.keys(json));
+            for (const id of customKeys) {
+                const key = document.getElementById(`customKey${id}`).value.trim();
+                const value = document.getElementById(`customValue${id}`).value.trim();
+                if (key && value) {
+                    if (existingKeys.has(key)) {
+                        alert(`Key "${key}" already exists`);
+                        return;
+                    }
+                    existingKeys.add(key);
+                    const numValue = parseFloat(value);
+                    json[key] = isNaN(numValue) ? value : numValue;
+                }
+            }
+            // Remove undefined
+            Object.keys(json).forEach(key => {
+                if (json[key] === undefined || (Array.isArray(json[key]) && json[key].length === 0)) delete json[key];
+            });
+            const jsonStr = JSON.stringify(json, null, 2);
+            document.getElementById('jsonOutput').value = jsonStr;
+            // Save to history
+            saveToHistory(jsonStr);
+            loadHistory();
+        }
+
+        function saveToHistory(jsonStr) {
+            let history = JSON.parse(localStorage.getItem('jsonHistory')) || [];
+            history.unshift(jsonStr);
+            if (history.length > 3) history = history.slice(0, 3);
+            localStorage.setItem('jsonHistory', JSON.stringify(history));
+        }
+
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('jsonHistory')) || [];
+            const list = document.getElementById('historyList');
+            list.innerHTML = '';
+            history.forEach((item, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-outline-primary btn-sm me-2 mb-2';
+                btn.textContent = `Load ${index + 1}`;
+                btn.onclick = () => loadFromHistory(item);
+                list.appendChild(btn);
+            });
+        }
+
+        function loadFromHistory(jsonStr) {
+            const json = JSON.parse(jsonStr);
+            document.getElementById('prompt').value = json.prompt || '';
+            document.getElementById('negativePrompt').value = json.negative_prompt || '';
+            document.getElementById('style').value = json.style || 'realistic';
+            document.getElementById('lighting').value = json.lighting || 'natural daylight';
+            document.getElementById('mood').value = json.mood || 'neutral';
+            document.getElementById('composition').value = json.composition || 'balanced';
+            document.getElementById('aspectRatio').value = json.aspect_ratio || '1:1';
+            document.getElementById('quality').value = json.quality || 'high';
+            document.getElementById('seed').value = json.seed || '';
+            // Color scheme
+            const colorSelect = document.getElementById('colorScheme');
+            Array.from(colorSelect.options).forEach(option => {
+                option.selected = json.color_scheme && json.color_scheme.includes(option.value);
+            });
+            document.getElementById('jsonOutput').value = jsonStr;
+            // Custom keys not loaded for simplicity
+        }
+    </script>
+</body>
+</html>
