@@ -8,9 +8,10 @@ A static web application for generating structured JSON prompts for LLM text-to-
 - Support for custom keys and values
 - Generates clean JSON output
 - Copy to clipboard and download as .json file
-- Local history storage for recent generations
+- Local counter for generated JSONs
 - Responsive design with Bootstrap
 - Educational tooltips for each parameter
+- Safari-compatible clipboard functionality
 
 ## How to Use
 
@@ -22,7 +23,7 @@ A static web application for generating structured JSON prompts for LLM text-to-
 6. View the output in the textarea.
 7. Use "Copy to Clipboard" or "Download JSON" to save the result.
 8. Use "Start Over" to reset the form.
-9. Recent JSONs are saved locally and can be loaded via the history buttons.
+9. The counter at the bottom shows how many JSONs have been generated in this browser.
 
 ## Deployment
 
@@ -33,7 +34,7 @@ The application is hosted on GitHub Pages at: https://sms1962.github.io/generato
 - HTML5, CSS3, Vanilla JavaScript
 - Bootstrap 5 for UI components
 - DOMPurify for input sanitization
-- LocalStorage for history
+- LocalStorage for counter
 
 ## Security
 
