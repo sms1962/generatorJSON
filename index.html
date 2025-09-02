@@ -14,7 +14,15 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center mb-4">JSON Prompt Generator</h1>
+        <div class="text-center mb-3">
+            <button id="showGenerator" class="btn btn-primary me-2">Generator</button>
+            <button id="showHelp" class="btn btn-outline-primary">Help</button>
+        </div>
+        <div id="generatorScreen">
+            <h1 class="text-center mb-4">JSON Prompt Generator</h1>
+            <div class="mb-4">
+                <p class="text-center">JSON prompts offer significant advantages over traditional text prompts by providing structured, machine-readable data that enables precise control over image generation parameters. Unlike free-form text which can be ambiguous and subject to interpretation, JSON allows for consistent, reproducible results across different AI models and sessions. This structured approach ensures that specific settings like style, lighting, mood, and composition are explicitly defined, reducing variability and improving the reliability of generated images. Additionally, JSON prompts facilitate easier automation, batch processing, and integration with other tools, making them ideal for professional workflows and consistent creative output.</p>
+            </div>
         <form id="promptForm">
             <div class="mb-3">
                 <label for="prompt" class="form-label">Prompt <span class="text-danger">*</span></label>
@@ -44,6 +52,13 @@
                                 <option value="watercolor">Watercolor</option>
                                 <option value="sketch">Sketch</option>
                                 <option value="cyberpunk">Cyberpunk</option>
+                                <option value="impresjonizm">Impresjonizm</option>
+                                <option value="surrealizm">Surrealizm</option>
+                                <option value="fantasy art">Fantasy Art</option>
+                                <option value="barok/renesans">Barok/Renesans</option>
+                                <option value="minimalizm">Minimalizm</option>
+                                <option value="steampunk">Steampunk</option>
+                                <option value="styl ghibli">Styl Ghibli</option>
                             </select>
                         </div>
                     </div>
@@ -67,6 +82,16 @@
                                 <option value="volumetric godrays">Volumetric Godrays</option>
                                 <option value="studio lighting">Studio Lighting</option>
                                 <option value="moonlight">Moonlight</option>
+                                <option value="golden hour">Golden Hour</option>
+                                <option value="chiaroscuro">Chiaroscuro</option>
+                                <option value="rim lighting">Rim Lighting</option>
+                                <option value="bokeh lighting">Bokeh Lighting</option>
+                                <option value="low key">Low Key</option>
+                                <option value="high key">High Key</option>
+                                <option value="twilight">Twilight</option>
+                                <option value="side lighting">Side Lighting</option>
+                                <option value="bioluminescent">Bioluminescent</option>
+                                <option value="strobe lighting">Strobe Lighting</option>
                             </select>
                         </div>
                     </div>
@@ -91,6 +116,16 @@
                                 <option value="melancholic">Melancholic</option>
                                 <option value="energetic">Energetic</option>
                                 <option value="peaceful">Peaceful</option>
+                                <option value="romantic">Romantic</option>
+                                <option value="nostalgic">Nostalgic</option>
+                                <option value="scary">Scary</option>
+                                <option value="inspirational">Inspirational</option>
+                                <option value="surreal">Surreal</option>
+                                <option value="hopeful">Hopeful</option>
+                                <option value="chaotic">Chaotic</option>
+                                <option value="tender">Tender</option>
+                                <option value="gritty">Gritty</option>
+                                <option value="ethereal">Ethereal</option>
                             </select>
                         </div>
                     </div>
@@ -214,23 +249,363 @@
                 <button type="button" class="btn btn-outline-secondary" id="downloadBtn">Download JSON</button>
             </div>
         </div>
+        </div>
+
+        <div id="helpScreen" style="display: none;">
+            <h1 class="text-center mb-4">Help Documentation</h1>
+
+            <div class="accordion" id="helpAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#helpPrompt" aria-expanded="true" aria-controls="helpPrompt">
+                            Chapter 1: Prompt
+                        </button>
+                    </h2>
+                    <div id="helpPrompt" class="accordion-collapse collapse show" data-bs-parent="#helpAccordion">
+                        <div class="accordion-body">
+                            <p>The <strong>prompt</strong> is the core description of the image you want to generate. It serves as the primary instruction for the AI model, defining the main subject, scene, and key elements.</p>
+                            <p><strong>Impact:</strong> This is the most influential parameter as it directly communicates your creative vision to the AI. A well-crafted prompt can significantly improve the relevance and quality of the generated image.</p>
+                            <p><strong>Examples:</strong></p>
+                            <ul>
+                                <li>"a serene mountain landscape" - Creates a peaceful outdoor scene with mountains</li>
+                                <li>"a futuristic city at sunset with flying cars" - Generates an urban sci-fi environment</li>
+                                <li>"an abstract representation of emotions through colors" - Produces artistic, non-literal interpretations</li>
+                            </ul>
+                            <p><strong>Best Practices:</strong> Be specific but concise. Include key visual elements, setting, and mood. Avoid contradictory descriptions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#helpNegativePrompt" aria-expanded="false" aria-controls="helpNegativePrompt">
+                            Chapter 2: Negative Prompt
+                        </button>
+                    </h2>
+                    <div id="helpNegativePrompt" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                        <div class="accordion-body">
+                            <p>The <strong>negative_prompt</strong> specifies elements you want to exclude from the generated image. It helps refine the output by preventing unwanted features.</p>
+                            <p><strong>Impact:</strong> Acts as a filter to improve image quality by removing common artifacts, distortions, or undesired elements. Particularly useful in models like Stable Diffusion.</p>
+                            <p><strong>Examples:</strong></p>
+                            <ul>
+                                <li>"blurry, low quality, distorted" - Removes common image defects</li>
+                                <li>"text, watermark, signature" - Prevents unwanted overlays</li>
+                                <li>"extra limbs, deformed hands, ugly" - Improves anatomical accuracy in character images</li>
+                            </ul>
+                            <p><strong>Best Practices:</strong> Focus on technical issues and unwanted elements. Use commas to separate multiple exclusions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#helpStyle" aria-expanded="false" aria-controls="helpStyle">
+                            Chapter 3: Style
+                        </button>
+                    </h2>
+                    <div id="helpStyle" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                        <div class="accordion-body">
+                            <p>The <strong>style</strong> parameter influences the artistic rendering technique and visual approach of the generated image.</p>
+                            <p><strong>Impact:</strong> Determines the overall aesthetic and technique, affecting brushwork, color application, and artistic interpretation.</p>
+                            <p><strong>Available Options:</strong></p>
+                            <ul>
+                                <li><strong>Realistic:</strong> Photorealistic rendering with natural lighting and textures</li>
+                                <li><strong>Cartoon:</strong> Simplified, animated-style with bold outlines and vibrant colors</li>
+                                <li><strong>Oil Painting:</strong> Traditional painting technique with visible brushstrokes and rich textures</li>
+                                <li><strong>Digital Art:</strong> Clean, modern digital illustration style</li>
+                                <li><strong>Photorealistic:</strong> Ultra-realistic, indistinguishable from photography</li>
+                                <li><strong>Abstract:</strong> Non-representational, conceptual art focusing on shapes and colors</li>
+                                <li><strong>Pixel Art:</strong> Retro gaming style with visible pixels and limited color palette</li>
+                                <li><strong>Watercolor:</strong> Soft, blended colors with characteristic watercolor effects</li>
+                                <li><strong>Sketch:</strong> Pencil or charcoal drawing style with loose lines</li>
+                                <li><strong>Cyberpunk:</strong> Neon-lit, futuristic urban environment with high-tech elements</li>
+                                <li><strong>Impresjonizm:</strong> Light and color-focused style with loose brushwork</li>
+                                <li><strong>Surrealizm:</strong> Dream-like, illogical compositions with unexpected elements</li>
+                                <li><strong>Fantasy Art:</strong> Magical, mythical scenes with fantastical creatures and settings</li>
+                                <li><strong>Barok/Renesans:</strong> Dramatic, ornate style with rich details and classical influences</li>
+                                <li><strong>Minimalizm:</strong> Clean, simple compositions with essential elements only</li>
+                                <li><strong>Steampunk:</strong> Victorian-era technology with brass gears and steam-powered machines</li>
+                                <li><strong>Styl Ghibli:</strong> Hand-drawn animation style inspired by Studio Ghibli films</li>
+                            </ul>
+                            <p><strong>Examples:</strong> Using "oil painting" with a landscape prompt creates a traditional art piece, while "cyberpunk" transforms the same scene into a futuristic metropolis.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#helpLighting" aria-expanded="false" aria-controls="helpLighting">
+                            Chapter 4: Lighting
+                        </button>
+                    </h2>
+                    <div id="helpLighting" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                        <div class="accordion-body">
+                            <p>The <strong>lighting</strong> parameter controls the illumination and shadow effects in the generated image.</p>
+                            <p><strong>Impact:</strong> Lighting dramatically affects mood, depth, and realism. It can create atmosphere, guide attention, and enhance the three-dimensional feel of the image.</p>
+                            <p><strong>Available Options:</strong></p>
+                            <ul>
+                                <li><strong>Natural Daylight:</strong> Bright, even outdoor lighting</li>
+                                <li><strong>Dramatic Shadows:</strong> Strong contrasts with deep shadows</li>
+                                <li><strong>Soft Ambient:</strong> Gentle, diffused lighting</li>
+                                <li><strong>Harsh Sunlight:</strong> Intense, direct sunlight</li>
+                                <li><strong>Neon Glow:</strong> Artificial, colorful lighting from neon sources</li>
+                                <li><strong>Candlelight:</strong> Warm, flickering illumination</li>
+                                <li><strong>Backlit:</strong> Subject lit from behind, creating silhouettes</li>
+                                <li><strong>Volumetric Godrays:</strong> Light rays visible through atmosphere</li>
+                                <li><strong>Studio Lighting:</strong> Professional, controlled lighting setup</li>
+                                <li><strong>Moonlight:</strong> Cool, blue-tinted night illumination</li>
+                                <li><strong>Golden Hour:</strong> Warm, golden light at sunrise/sunset</li>
+                                <li><strong>Chiaroscuro:</strong> High contrast between light and dark areas</li>
+                                <li><strong>Rim Lighting:</strong> Subject outlined with light from behind</li>
+                                <li><strong>Bokeh Lighting:</strong> Blurred background lights creating bokeh effect</li>
+                                <li><strong>Low Key:</strong> Mostly dark with small areas of light</li>
+                                <li><strong>High Key:</strong> Mostly bright with few shadows</li>
+                                <li><strong>Twilight:</strong> Dim, transitional lighting between day and night</li>
+                                <li><strong>Side Lighting:</strong> Light coming from the side, creating depth</li>
+                                <li><strong>Bioluminescent:</strong> Glowing, organic light sources</li>
+                                <li><strong>Strobe Lighting:</strong> Flashing, high-intensity light bursts</li>
+                            </ul>
+                            <p><strong>Examples:</strong> "Golden Hour" creates warm, nostalgic scenes perfect for landscapes, while "dramatic shadows" adds tension and mystery to portraits.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#helpMood" aria-expanded="false" aria-controls="helpMood">
+                            Chapter 5: Mood
+                        </button>
+                    </h2>
+                    <div id="helpMood" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                        <div class="accordion-body">
+                            <p>The <strong>mood</strong> parameter conveys the emotional tone and atmosphere of the generated image.</p>
+                            <p><strong>Impact:</strong> Influences color palette, lighting intensity, and overall emotional response. Helps AI models interpret the desired atmosphere beyond literal descriptions.</p>
+                            <p><strong>Available Options:</strong></p>
+                            <ul>
+                                <li><strong>Neutral:</strong> Balanced, objective tone</li>
+                                <li><strong>Joyful:</strong> Bright, happy, uplifting</li>
+                                <li><strong>Mysterious:</strong> Intriguing, enigmatic atmosphere</li>
+                                <li><strong>Serene:</strong> Calm, peaceful, tranquil</li>
+                                <li><strong>Dramatic:</strong> Intense, powerful, theatrical</li>
+                                <li><strong>Eerie:</strong> Unsettling, spooky, supernatural</li>
+                                <li><strong>Whimsical:</strong> Playful, fanciful, lighthearted</li>
+                                <li><strong>Adventurous:</strong> Exciting, exploratory, dynamic</li>
+                                <li><strong>Melancholic:</strong> Sad, reflective, somber</li>
+                                <li><strong>Energetic:</strong> Vibrant, lively, active</li>
+                                <li><strong>Peaceful:</strong> Tranquil, harmonious, restful</li>
+                                <li><strong>Romantic:</strong> Loving, intimate, tender</li>
+                                <li><strong>Nostalgic:</strong> Sentimental, reminiscent of the past</li>
+                                <li><strong>Scary:</strong> Frightening, terrifying, alarming</li>
+                                <li><strong>Inspirational:</strong> Motivating, uplifting, aspirational</li>
+                                <li><strong>Surreal:</strong> Dream-like, bizarre, unreal</li>
+                                <li><strong>Hopeful:</strong> Optimistic, positive, encouraging</li>
+                                <li><strong>Chaotic:</strong> Disorderly, turbulent, unpredictable</li>
+                                <li><strong>Tender:</strong> Gentle, caring, affectionate</li>
+                                <li><strong>Gritty:</strong> Raw, realistic, unpolished</li>
+                                <li><strong>Ethereal:</strong> Delicate, otherworldly, spiritual</li>
+                            </ul>
+                            <p><strong>Examples:</strong> "Eerie" enhances horror scenes with dim lighting and unsettling compositions, while "joyful" brightens colors and adds playful elements to celebrations.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#helpColorScheme" aria-expanded="false" aria-controls="helpColorScheme">
+                            Chapter 6: Color Scheme
+                        </button>
+                    </h2>
+                    <div id="helpColorScheme" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                        <div class="accordion-body">
+                            <p>The <strong>color_scheme</strong> parameter defines the dominant color palette and visual tone of the image.</p>
+                            <p><strong>Impact:</strong> Controls the overall color temperature, saturation, and emotional impact. Multiple selections allow for complex color combinations.</p>
+                            <p><strong>Available Options:</strong></p>
+                            <ul>
+                                <li><strong>Neutral:</strong> Balanced grays and beiges</li>
+                                <li><strong>Monochrome:</strong> Single color with variations</li>
+                                <li><strong>Vibrant:</strong> Bright, saturated colors</li>
+                                <li><strong>Pastel:</strong> Soft, muted color palette</li>
+                                <li><strong>Earth Tones:</strong> Natural browns, greens, and ochres</li>
+                                <li><strong>Cool Blues:</strong> Blue-dominated cool tones</li>
+                                <li><strong>Warm Oranges:</strong> Orange and red warm tones</li>
+                                <li><strong>High Contrast:</strong> Strong light-dark differences</li>
+                                <li><strong>Neon:</strong> Bright, artificial neon colors</li>
+                                <li><strong>Grayscale:</strong> Black, white, and gray only</li>
+                            </ul>
+                            <p><strong>Examples:</strong> Combining "earth tones" with "pastel" creates soft, natural landscapes, while "neon" with "high contrast" produces vibrant cyberpunk scenes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#helpComposition" aria-expanded="false" aria-controls="helpComposition">
+                            Chapter 7: Composition
+                        </button>
+                    </h2>
+                    <div id="helpComposition" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                        <div class="accordion-body">
+                            <p>The <strong>composition</strong> parameter guides the arrangement and placement of elements within the image frame.</p>
+                            <p><strong>Impact:</strong> Affects visual flow, balance, and focal points. Proper composition can make images more engaging and professional-looking.</p>
+                            <p><strong>Available Options:</strong></p>
+                            <ul>
+                                <li><strong>Balanced:</strong> Evenly distributed elements</li>
+                                <li><strong>Rule of Thirds:</strong> Subject placed along imaginary grid lines</li>
+                                <li><strong>Centered:</strong> Main subject in the center</li>
+                                <li><strong>Symmetrical:</strong> Mirror-image balance</li>
+                                <li><strong>Asymmetrical:</strong> Dynamic, off-center balance</li>
+                                <li><strong>Wide Angle:</strong> Broad field of view</li>
+                                <li><strong>Close-up:</strong> Detailed view of subject</li>
+                                <li><strong>Panoramic:</strong> Wide horizontal format</li>
+                                <li><strong>Depth of Field:</strong> Selective focus with blur</li>
+                                <li><strong>Leading Lines:</strong> Lines that guide the eye</li>
+                                <li><strong>Framed:</strong> Subject framed by other elements</li>
+                            </ul>
+                            <p><strong>Examples:</strong> "Rule of Thirds" creates more dynamic landscapes, while "close-up" emphasizes details in portraits.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#helpAspectRatio" aria-expanded="false" aria-controls="helpAspectRatio">
+                            Chapter 8: Aspect Ratio
+                        </button>
+                    </h2>
+                    <div id="helpAspectRatio" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                        <div class="accordion-body">
+                            <p>The <strong>aspect_ratio</strong> parameter controls the proportional dimensions of the generated image.</p>
+                            <p><strong>Impact:</strong> Determines the shape and format of the output, affecting how the composition fits within the frame.</p>
+                            <p><strong>Available Options:</strong></p>
+                            <ul>
+                                <li><strong>1:1 (Square):</strong> Perfect square format</li>
+                                <li><strong>16:9 (Widescreen):</strong> Wide horizontal format</li>
+                                <li><strong>9:16 (Portrait):</strong> Tall vertical format</li>
+                                <li><strong>4:3:</strong> Traditional rectangular format</li>
+                                <li><strong>3:2:</strong> Classic photographic ratio</li>
+                                <li><strong>2:1 (Panorama):</strong> Ultra-wide horizontal format</li>
+                                <li><strong>Custom:</strong> User-defined dimensions</li>
+                            </ul>
+                            <p><strong>Examples:</strong> "16:9" is ideal for cinematic landscapes, while "9:16" works well for mobile-optimized portraits.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#helpQuality" aria-expanded="false" aria-controls="helpQuality">
+                            Chapter 9: Quality
+                        </button>
+                    </h2>
+                    <div id="helpQuality" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                        <div class="accordion-body">
+                            <p>The <strong>quality</strong> parameter influences the level of detail, resolution, and refinement in the generated image.</p>
+                            <p><strong>Impact:</strong> Higher quality settings produce more detailed and polished results, though they may require more processing time.</p>
+                            <p><strong>Available Options:</strong></p>
+                            <ul>
+                                <li><strong>High:</strong> Standard high-quality output</li>
+                                <li><strong>Low Detail:</strong> Simplified, less detailed rendering</li>
+                                <li><strong>Medium Detail:</strong> Balanced detail level</li>
+                                <li><strong>Ultra HD:</strong> Extremely high resolution and detail</li>
+                                <li><strong>8K:</strong> Ultra-high definition quality</li>
+                                <li><strong>Photorealistic:</strong> Photo-quality detail and realism</li>
+                                <li><strong>Stylized:</strong> Artistic interpretation with enhanced style</li>
+                                <li><strong>Minimalist:</strong> Clean, simplified aesthetic</li>
+                                <li><strong>Intricate:</strong> Highly detailed, complex rendering</li>
+                                <li><strong>Sharp Focus:</strong> Crisp, well-defined details</li>
+                            </ul>
+                            <p><strong>Examples:</strong> "Ultra HD" produces highly detailed technical illustrations, while "minimalist" creates clean, modern designs.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#helpSeed" aria-expanded="false" aria-controls="helpSeed">
+                            Chapter 10: Seed
+                        </button>
+                    </h2>
+                    <div id="helpSeed" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                        <div class="accordion-body">
+                            <p>The <strong>seed</strong> parameter is a numerical value that initializes the random number generator in diffusion models.</p>
+                            <p><strong>Impact:</strong> Ensures reproducible results. Using the same seed with identical parameters will generate very similar images.</p>
+                            <p><strong>How to Use:</strong> Enter any integer value. The same seed with the same prompt and settings will produce consistent results across generations.</p>
+                            <p><strong>Examples:</strong></p>
+                            <ul>
+                                <li>Seed: 12345 - Consistent results for testing variations</li>
+                                <li>Seed: 0 - Random generation (default behavior)</li>
+                                <li>Changing seed slightly creates variations while maintaining overall composition</li>
+                            </ul>
+                            <p><strong>Best Practices:</strong> Use fixed seeds when you want to iterate on specific compositions or when sharing prompts for consistent results.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#helpCustomKeys" aria-expanded="false" aria-controls="helpCustomKeys">
+                            Chapter 11: Custom Keys
+                        </button>
+                    </h2>
+                    <div id="helpCustomKeys" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Custom Keys</strong> allow you to add additional parameters not covered by the standard options.</p>
+                            <p><strong>Impact:</strong> Extends functionality for advanced users and specific model requirements. Enables fine-tuning of generation parameters.</p>
+                            <p><strong>How to Use:</strong> Click "Add Custom Key" to create new key-value pairs. Enter the parameter name and its value.</p>
+                            <p><strong>Examples:</strong></p>
+                            <ul>
+                                <li><strong>steps:</strong> 50 - Controls the number of denoising steps</li>
+                                <li><strong>cfg_scale:</strong> 7.5 - Classifier-free guidance scale</li>
+                                <li><strong>denoising_strength:</strong> 0.75 - Controls how much the image changes</li>
+                                <li><strong>model:</strong> "realistic_vision" - Specifies the AI model to use</li>
+                            </ul>
+                            <p><strong>Best Practices:</strong> Only add custom keys if you understand their purpose. Incorrect values may produce unexpected results or errors.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
-    <div class="text-center mt-4" id="counter">Generated JSONs: 0</div>
+
+    <footer class="bg-light text-center text-muted mt-5 py-3">
+        <div class="container">
+            <p class="mb-0">
+                JSON Prompt Generator 2025 |
+                <a href="https://opensource.org/licenses/MIT" target="_blank" class="text-decoration-none">MIT License</a> |
+                <a href="https://github.com/sms1962/generatorJSON" target="_blank" class="text-decoration-none">View on GitHub</a>
+            </p>
+        </div>
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
     <script>
         let customKeyCount = 0;
         const customKeys = [];
-        let generatedCount = 0;
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Screen switching
+            document.getElementById('showGenerator').addEventListener('click', function() {
+                document.getElementById('generatorScreen').style.display = 'block';
+                document.getElementById('helpScreen').style.display = 'none';
+                document.getElementById('showGenerator').classList.add('btn-primary');
+                document.getElementById('showGenerator').classList.remove('btn-outline-primary');
+                document.getElementById('showHelp').classList.remove('btn-primary');
+                document.getElementById('showHelp').classList.add('btn-outline-primary');
+            });
+
+            document.getElementById('showHelp').addEventListener('click', function() {
+                document.getElementById('generatorScreen').style.display = 'none';
+                document.getElementById('helpScreen').style.display = 'block';
+                document.getElementById('showHelp').classList.add('btn-primary');
+                document.getElementById('showHelp').classList.remove('btn-outline-primary');
+                document.getElementById('showGenerator').classList.remove('btn-primary');
+                document.getElementById('showGenerator').classList.add('btn-outline-primary');
+            });
+
             // Generate random seed on load
             document.getElementById('seed').value = Math.floor(Math.random() * 1000000);
-
-            // Load counter
-            generatedCount = parseInt(localStorage.getItem('generatedCount')) || 0;
-            updateCounter();
 
             // Add custom key functionality
             document.getElementById('addCustomKey').addEventListener('click', function() {
@@ -348,7 +723,7 @@
                 const value = document.getElementById(`customValue${id}`).value.trim();
                 if (key && value) {
                     if (existingKeys.has(key)) {
-                        alert(`Key "${key}" already exists`);
+                        alert('Key already exists');
                         return;
                     }
                     existingKeys.add(key);
@@ -362,14 +737,6 @@
             });
             const jsonStr = JSON.stringify(json, null, 2);
             document.getElementById('jsonOutput').value = jsonStr;
-            // Increment counter
-            generatedCount++;
-            localStorage.setItem('generatedCount', generatedCount);
-            updateCounter();
-        }
-
-        function updateCounter() {
-            document.getElementById('counter').textContent = `Generated JSONs: ${generatedCount}`;
         }
     </script>
 </body>
